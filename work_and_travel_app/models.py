@@ -1,56 +1,60 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
 
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    index = models.CharField(max_length=4, unique=True)
 
 
-class Grades(models.Model):
+class Grade(models.Model):
     rating = models.IntegerField()
-    description = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField(max_length=255)
+
+
+class Answer(models.Model):
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    text = models.TextField(max_length=255)
 
 
 class BaseInformation(models.Model):
     SEX_CHOICES = [
-        ('kobieta', 'Kobieta'),
-        ('mężczyzna', 'Mężczyzna'),
-        ('inne', 'Inne'),
+        ('female', 'Female'),
+        ('male', 'Male'),
+        ('other', 'Other'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=60)
-    email = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=255)
     date_of_birth = models.DateTimeField()
     are_you_traveling = models.BooleanField(default=False)
-    country = models.CharField(max_length=255)
+    native_origin = models.CharField(max_length=255)
     sex = models.CharField(max_length=9, choices=SEX_CHOICES)
-    # grades = models.ForeignKey(Grades, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f" {self.first_name} {self.last_name}"
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
-class Announcement(models.Model):
+class Offer(models.Model):
     OFFER_CHOICES = [
-        ('employer', 'Pracodawca'),
-        ('employee', 'Pracownik'),
+        ('employer', 'Employer'),
+        ('employee', 'Employee'),
     ]
 
-    name = models.CharField(max_length=50)
-    big_city_100_km = models.CharField(max_length=200)
+    name = models.CharField(max_length=255)
+    country = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     description = models.TextField()
     offer_type = models.CharField(max_length=20, choices=OFFER_CHOICES)
     category = models.ManyToManyField(Category)
-    since_when = models.DateTimeField()
-    until_when = models.DateTimeField()
+    since_when = models.DateField()
+    until_when = models.DateField()
     only_for_women = models.BooleanField(default=False)
-    who = models.ForeignKey(BaseInformation, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    price = models.IntegerField()
 
 
 class Message(models.Model):
     message = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
