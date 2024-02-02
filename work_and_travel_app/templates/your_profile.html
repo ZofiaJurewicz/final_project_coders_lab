@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>work_world_and_travel</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Your Profile</h1>
+    <p>Name: {{ user.username }}</p>
+    <p>First name: {{ user.first_name }}</p>
+    <p>Last name: {{ user.last_name}}</p>
+
+    {% if base_info %}
+        <p>Contact Number: {{ base_info.contact_number }}</p>
+        <p>Date of Birth: {{ base_info.date_of_birth }}</p>
+        <p>Are you traveling: {{ base_info.are_you_traveling }}</p>
+        <p>Native Origin: {{ base_info.native_origin }}</p>
+        <p>Sex: {{ base_info.get_sex_display }}</p>
+        <a href="{% url 'edit_base_info' %}">Edit Base Information</a>
+    {% else %}
+        <a href="{%  url 'add_base_info' %}">Add Base Information</a>
+    {% endif %}
+
+</body>
+</html>

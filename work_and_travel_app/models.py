@@ -36,8 +36,8 @@ class BaseInformation(models.Model):
 
 class Offer(models.Model):
     OFFER_CHOICES = [
-        ('employer', 'Employer'),
-        ('employee', 'Employee'),
+        ('job offer', 'Job Offer'),
+        ('job seekers', 'Job Seekers'),
     ]
 
     name = models.CharField(max_length=255)
@@ -50,7 +50,7 @@ class Offer(models.Model):
     until_when = models.DateField()
     only_for_women = models.BooleanField(default=False)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    price = models.IntegerField()
+    is_active = models.BooleanField(default=True)
 
 
 class Message(models.Model):
