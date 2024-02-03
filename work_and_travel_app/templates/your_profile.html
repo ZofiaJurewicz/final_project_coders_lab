@@ -8,20 +8,24 @@
 </head>
 <body>
     <h1>Your Profile</h1>
-    <p>Name: {{ user.username }}</p>
-    <p>First name: {{ user.first_name }}</p>
-    <p>Last name: {{ user.last_name}}</p>
+    {% if base_info is Null %}
+        <p>Name: {{ user.username }}</p>
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name}}</p>
+        <a href="{%  url 'add_base_info' %}">Add Base Information</a>
 
-    {% if base_info %}
+    {% else %}
+        <p>Name: {{ user.username }}</p>
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name}}</p>
         <p>Contact Number: {{ base_info.contact_number }}</p>
         <p>Date of Birth: {{ base_info.date_of_birth }}</p>
         <p>Are you traveling: {{ base_info.are_you_traveling }}</p>
         <p>Native Origin: {{ base_info.native_origin }}</p>
         <p>Sex: {{ base_info.get_sex_display }}</p>
         <a href="{% url 'edit_base_info' %}">Edit Base Information</a>
-    {% else %}
-        <a href="{%  url 'add_base_info' %}">Add Base Information</a>
     {% endif %}
+    <a href="{% url 'logout_view' %}">Logout</a>
 
 </body>
 </html>

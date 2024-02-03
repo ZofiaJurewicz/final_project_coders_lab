@@ -10,7 +10,7 @@
   {% if user.is_authenticated %}
     <p>Hello {{ user.username }}</p>
   {% endif %}
-    <a href="your_profile.html">
+    <a href="{% url 'your_profile' %}">
     <button type="button">Your Profile</button>
   </a>
   <h2>Add your offer</h2>
