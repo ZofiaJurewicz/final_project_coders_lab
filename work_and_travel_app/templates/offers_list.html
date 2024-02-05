@@ -1,31 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offer List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer List</title>
 </head>
+
 <body>
-<form action="{% url 'login_view' %}" method="post">
-          <button type="submit">Log in</button>
-  <h1>Offer List</h1>
-    <form action="" method="get">
-      <label for="search">Where: </label>
-      <input type="text" id="search" name="search">
-      <button type="submit">Search</button>
-  </form>
-  {% for offer in offers %}
-    <div>
-      <h2>{{ offer.name }}</h2>
-      <p>Country: {{ offer.country }}</p>
-      {% if user.is_authenticated %}
-        <p>City: {{ offer.city }}</p>
-        <p>Category: {{ offer.category.all}}</p>
-        <form action="{% url 'offer_details' name=offer.name %}" method="post">
-          <button type="submit">Offer Details</button>
+    <h1>Offer List</h1>
+        <form action="{% url 'add_offer' %}" method="get">
+            {% csrf_token %}
+            <button type="submit">Add offer</button>
         </form>
-      {% endif %}
+    <form action="{% url 'start' %}" method="get">
+        {% csrf_token %}
+        <button type="submit">Start</button>
+    </form>
+    <form action="" method="get">
+        <label for="search">Where: </label>
+        <input type="text" id="search" name="search">
+        <button type="submit">Search</button>
+    </form>
+    {% for offer in offers %}
+        <div>
+            <h2><a href="{% url 'offer_details' name=offer.name %}">{{ offer.name }}</a></h2>
+            {% if user %}
+                <p>Country: {{ offer.country }}</p>
+                <p>City: {{ offer.city }}</p>
+                <p> Owner: {{ user.first_name }}</p>
+                <p>Category: {{ offer.category.all|join:", "}}</p>
+                <form action="{% url 'message_view' offer_id=offer.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Message</button>
+                </form>
+                <form action="{% url 'offer_details' name=offer.name %}" method="get">
+                    {% csrf_token %}
+                    <button type="submit">Offer Details</button>
+                </form>
+                <form action="{% url 'edit_offer' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Edit offer</button>
+                </form>
+            {% else %}
+                <p> Country: {{ offer.country }}</p>
+                <p>City: {{ offer.city }}</p>
+                <p>Category: {{ offer.category.all|join:", "}}</p>
+                <form action="{% url 'login_view' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Login</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if offers_list.has_previous %}
+                <a href="?page={{ offers_list.previous_page_number }}">&laquo; previous</a>
+            {% endif %}
+            {% for i in offers_list.paginator.page_range %}
+                {% if offers_list.number == i %}
+                    <span class="current">
+                        {{ i }}
+                    </span>
+                {% else %}
+                    <a href="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if offers_list.has_next %}
+                <a href="?page={{ offers_list.next_page_number }}">next &raquo;</a>
+            {% endif %}
+        </span>
     </div>
-  {% endfor %}
 </body>
+
 </html>

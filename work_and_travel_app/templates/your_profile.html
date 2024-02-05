@@ -8,7 +8,9 @@
 </head>
 <body>
     <h1>Your Profile</h1>
-    {% if base_info is Null %}
+    <a href="{% url 'add_offer' %}">Add offer</a>
+    <a href="{% url 'offers_list' %}">Offers</a>
+    {% if base_info is None %}
         <p>Name: {{ user.username }}</p>
         <p>First name: {{ user.first_name }}</p>
         <p>Last name: {{ user.last_name}}</p>
@@ -26,6 +28,8 @@
         <a href="{% url 'edit_base_info' %}">Edit Base Information</a>
     {% endif %}
     <a href="{% url 'logout_view' %}">Logout</a>
-
+{% if not authorized %}
+<a href="start.html"></a>
+{% endif %}
 </body>
 </html>

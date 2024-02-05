@@ -1,0 +1,92 @@
+<!-- base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Title{% endblock %}</title>
+    <style>
+        body {
+            background-color: #f4e3e3; /* jasny róż */
+            color: #333; /* ciemniejszy kolor tekstu */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #4a90e2; /* niebieski */
+            padding: 15px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shapes svg {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            fill: #fff; /* kolor biały dla kształtów w svg */
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5em; /* zmniejsz rozmiar czcionki dla lepszego wyglądu */
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        input {
+            padding: 5px;
+            border: 1px solid #ccc; /* lekka ramka wokół pola tekstowego */
+            border-radius: 3px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        main {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="shapes">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="lavender">
+                <circle cx="30" cy="70" r="15"/>
+                <circle cx="70" cy="30" r="20"/>
+                <path d="M50 0 A50 50 0 0 0 50 100 Z" fill="lavender"/>
+            </svg>
+        </div>
+        <h1>Work, World & Travel</h1>
+        <form action="" method="get">
+            <label for="search">Search</label>
+            <input type="text" id="search" name="search">
+            <button type="submit">Search</button>
+        </form>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>

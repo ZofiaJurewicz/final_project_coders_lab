@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 from work_and_travel_app.views import AddOfferView, YourProfile, AddBaseInfoView, EditBaseInfoView, StartView, \
-    OffersListLoginView, OfferDetailsView, EditOfferView, YourOffersCreateView, YourOffersApplyView, MessagesView, \
+    OfferDetailsView, EditOfferView, YourOffersCreateView, YourOffersApplyView, MessagesView, \
     OffersListView
 from accounts import views as account_view
 
@@ -33,13 +33,11 @@ urlpatterns = [
     path('add_base_info/', AddBaseInfoView.as_view(), name='add_base_info'),
     path('edit_base_info/', EditBaseInfoView.as_view(), name='edit_base_info'),
     path('profile/', YourProfile.as_view(), name='your_profile'),
-    path('offers_list_log/', OffersListLoginView.as_view(), name='offers_list_login'),
     path('offers_list/', OffersListView.as_view(), name='offers_list'),
-    path('offer_details_log/<str:name>/', OfferDetailsView.as_view(), name='offer_details_log'),
     path('offer_details/<str:name>/', OfferDetailsView.as_view(), name='offer_details'),
     path('edit_offer/', EditOfferView.as_view(), name='edit_offer'),
-    path('your_offers_create', YourOffersCreateView.as_view(), name='your_offers_create'),
-    path('your_offers_apply', YourOffersApplyView.as_view(), name='your_offers_apply'),
-    path('messages', MessagesView.as_view(), name='message_view')
+    path('your_offers_create/', YourOffersCreateView.as_view(), name='your_offers_create'),
+    path('your_offers_apply/', YourOffersApplyView.as_view(), name='your_offers_apply'),
+    path('messages/<int:offer_id>', MessagesView.as_view(), name='message_view')
 ]
 

@@ -5,6 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-
+    <h2>{{ offer.name }} - message</h2>
+<div class="message-container">
+    {% for message in messages %}
+        <div class="message {% if message.sender == offer.owner %}owner-message{% endif %}">
+            <p>{{ message.message }}</p>
+        </div>
+    {% endfor %}
+    {% if not is_offer_owner %}
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ message_form.message }}
+            <button type="submit">Send</button>
+        </form>
+    {% endif %}
+</div>
 </body>
 </html>
