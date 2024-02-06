@@ -19,7 +19,7 @@
             {% if user.is_authenticated %}
             <p> Owner: {{ offer.owner.first_name }}</p>
                 {% if offer.owner != user %}
-                <form action="{% url 'message_view' offer_id=offer.id %}" method="post">
+                <form action="{% url 'message_view' offer_id=offer.id sender=message.sender %}" method="post">
                     {% csrf_token %}
                     <button type="submit">Message</button>
                 </form>
@@ -33,10 +33,11 @@
                         {% csrf_token %}
                         <button type="submit">Edit offer</button>
                     </form>
+                    <a href="#" class="btn btn-danger rounded-0 text-light m-1">Delete</a>
                 {% endif %}
             {% else %}
-            <form action="{% url 'login_view' %}" method="post">
-                <button type="submit">Login</button>
+            <form action="{% url 'offer_details' offer_id=offer.id %}" method="get">
+                <button type="submit">Offer Details</button>
             </form>
             {% endif %}
             </div>

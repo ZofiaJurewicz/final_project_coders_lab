@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -67,18 +68,19 @@ class EditBaseInfoView(LoginRequiredMixin, View):
 class AddOfferView(LoginRequiredMixin, View):
     def get(self, request):
         form = OfferForm()
-
-        return render(request, 'add_offer.html', {'form': form})
+        categories = Category.objects.all()
+        return render(request, 'add_offer.html', {'form': form, 'categories': categories})
 
     def post(self, request):
         form = OfferForm(request.POST)
+        categories = Category.objects.all()
         if form.is_valid():
             offer = form.save(commit=False)
             offer.owner = request.user
             offer.save()
             return redirect('offers_list')
 
-        return render(request, 'add_offer.html', {'form': form})
+        return render(request, 'add_offer.html', {'form': form, 'categories': categories})
 
 
 class EditOfferView(LoginRequiredMixin, View):
@@ -138,36 +140,41 @@ class OfferDetailsView(View):
         return render(request, 'offer_details.html', {'offer': offer, 'categories': categories})
 
 
-class YourOffersMessageBoxView(LoginRequiredMixin, View):
+class MessageBoxView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'your_offers_messages_box.html')
+        return render(request, 'messages_box.html')
 
 
 class MessagesView(LoginRequiredMixin, View):
-    def get(self, request, offer_id):
+    def get(self, request, offer_id, sender_name):
         offer = Offer.objects.get(id=offer_id)
-        message_form = MessageForm()
+        sender = Message.objects.get(sender=sender_name)
+        messages = Message.objects.filter(Q(offer=offer) & (Q(receiver=request.user) | Q(sender=request.user))).order_by('time')
+        form = MessageForm()
 
         ctx = {
             'offer': offer,
-            'message_form': message_form,
+            'form': form,
+            'messages': messages,
+            'sender': sender,
         }
-        return render(request, 'messages.html', ctx)
+        return render(request, 'messages_view.html', ctx)
 
-    def post(self, request, offer_id):
+    def post(self, request, offer_id, sender_name):
         offer = Offer.objects.get(id=offer_id)
-        message_form = MessageForm(request.POST)
+        sender = Message.objects.get(sender=sender_name)
+        form = MessageForm(request.POST)
 
-        if message_form.is_valid():
-            new_message = message_form.save(commit=False)
-            new_message.offer = offer
-            new_message.save()
-
-            ctx = {
-                'offer': offer,
-                'message_form': message_form,
-            }
-        return render(request, 'messages.html', ctx)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.offer = offer
+            message.sender = request.user
+            message.receiver = offer.owner
+            message.save()
+            return redirect('message_view', offer_id=offer_id, sender=sender)
+        else:
+            messages = Message.objects.filter(Q(offer=offer) & (Q(receiver=request.user) | Q(sender=request.user))).order_by('time')
+            return render(request, 'messages_view.html', {'offer': offer, 'messages': messages, 'form': form})
 
 
 class GradeView(LoginRequiredMixin, View):

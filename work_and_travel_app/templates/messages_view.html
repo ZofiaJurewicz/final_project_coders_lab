@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block contents %}
+    <h1>{{ offer.name }}</h1>
+    <h2>Messages: </h2>
+    <ul>
+        {% for message in messages %}
+            <li>from: {{ message.sender }} <br>
+                {{ message.message }}</li>
+        {% endfor %}
+    </ul>
+     <h2>Write a message to: {{ messages.reverse }}</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+{% endblock %}

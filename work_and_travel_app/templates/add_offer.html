@@ -2,7 +2,7 @@
 
 {% block contents %}
   <h1>Add your offer</h1>
-  <form method="post">
+  <form method="post" action="">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>

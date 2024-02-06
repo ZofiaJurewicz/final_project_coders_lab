@@ -65,4 +65,4 @@ class Message(models.Model):
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.sender} to {self.receiver}: {self.message}"
+        return f"{self.sender}  {self.receiver}"
