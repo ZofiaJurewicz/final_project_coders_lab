@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block content %}
+  <h2>Your Message Box</h2>
+  <ul>
+    {% for message in messages %}
+      <li>
+        <strong>{{ message.sender }}:</strong> {{ message.message }} - {{ message.time }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

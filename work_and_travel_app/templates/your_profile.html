@@ -1,35 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>work_world_and_travel</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-    <h1>Your Profile</h1>
-    <a href="{% url 'add_offer' %}">Add offer</a>
-    <a href="{% url 'offers_list' %}">Offers</a>
-    {% if base_info is None %}
-        <p>Name: {{ user.username }}</p>
-        <p>First name: {{ user.first_name }}</p>
-        <p>Last name: {{ user.last_name}}</p>
-        <a href="{%  url 'add_base_info' %}">Add Base Information</a>
+{% extends 'index.html' %}
 
-    {% else %}
+{% block contents %}
+    <h1>Your Profile</h1>
         <p>Name: {{ user.username }}</p>
         <p>First name: {{ user.first_name }}</p>
         <p>Last name: {{ user.last_name}}</p>
-        <p>Contact Number: {{ base_info.contact_number }}</p>
-        <p>Date of Birth: {{ base_info.date_of_birth }}</p>
-        <p>Are you traveling: {{ base_info.are_you_traveling }}</p>
-        <p>Native Origin: {{ base_info.native_origin }}</p>
-        <p>Sex: {{ base_info.get_sex_display }}</p>
+        <p>Contact Number: {{ user.baseinformation.contact_number }}</p>
+        <p>Date of Birth: {{ user.baseinformation.date_of_birth }}</p>
+        <p>Are you traveling: {{ user.baseinformation.are_you_traveling }}</p>
+        <p>Native Origin: {{ user.baseinformation.native_origin }}</p>
+        <p>Sex: {{ user.baseinformation.get_sex_display }}</p>
+
+    {% if BaseInformation is not None %}
         <a href="{% url 'edit_base_info' %}">Edit Base Information</a>
+    {% else %}
+        <a href="{% url 'add_base_info' %}">Add Base Information</a>
     {% endif %}
-    <a href="{% url 'logout_view' %}">Logout</a>
 {% if not authorized %}
 <a href="start.html"></a>
 {% endif %}
-</body>
-</html>
+{% endblock %}

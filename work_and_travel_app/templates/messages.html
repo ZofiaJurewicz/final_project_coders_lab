@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h2>{{ offer.name }} - message</h2>
-<div class="message-container">
-    {% for message in messages %}
-        <div class="message {% if message.sender == offer.owner %}owner-message{% endif %}">
-            <p>{{ message.message }}</p>
-        </div>
-    {% endfor %}
-    {% if not is_offer_owner %}
-        <form method="post" action="">
-            {% csrf_token %}
-            {{ message_form.message }}
-            <button type="submit">Send</button>
-        </form>
-    {% endif %}
-</div>
-</body>
-</html>
+{% extends 'index.html' %}
+
+{% block content %}
+  <h2>Write a message to the owner of the offer: {{ offer.name }}</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ message_form.as_p }}
+    <button type="submit">Send</button>
+  </form>
+{% endblock %}

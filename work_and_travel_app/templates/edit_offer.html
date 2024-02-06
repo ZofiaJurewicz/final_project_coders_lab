@@ -1,21 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>work_world_and_travel</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block contents %}
   {% if user.is_authenticated %}
     <p>{{ user.username }}</p>
   {% endif %}
-  </a>
-    <h1>Edit offer {{ offer.name }}</h1>
-    <form method="post" action="{% url 'edit_offer' offer.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save Changes</button>
-    </form>
-</body>
-</html>
+  <h1>Edit offer</h1>
+  <form method="post" action="{% url 'edit_offer' offer_id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="offer_id" value="{{ offer_id }}">
+    <button type="submit">Save Changes</button>
+  </form>
+  {% if form.errors %}
+    <p>Form has errors. Please correct them.</p>
+  {% endif %}
+{% endblock %}

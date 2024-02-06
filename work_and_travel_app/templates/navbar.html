@@ -1,0 +1,26 @@
+<div class="container px-4 px-lg-5">
+{{ xxx }}
+        <a class="navbar-brand" href="#page-top">
+            {% if not user.is_authenticated %}
+                Hello Stranger
+                <ul>
+                    <li><a href="{% url 'login_view' %}">Login</a></li>
+                    <li><a href="{% url 'register_view' %}">Register</a></li>
+                </ul>
+            {% else %}
+                <ul>
+                    <li><p>Hello {{ user.username }}</p></li>
+                </ul>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'start' %}">Start</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'offers_list' %}">Offers</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'add_offer' %}">Add offer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'your_profile' %}">Your profile, {{ user.username }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'logout_view' %}">Logout</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+        </a>
+    </div>
+</div>

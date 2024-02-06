@@ -35,7 +35,7 @@ class LogoutView(View):
 
     def get(self, request):
         logout(request)
-        return redirect('offers_list')
+        return redirect('start')
 
 
 class RegistrationView(View):

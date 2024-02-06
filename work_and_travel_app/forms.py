@@ -1,6 +1,6 @@
 from django import forms
 
-from work_and_travel_app.models import Offer, BaseInformation, Message
+from work_and_travel_app.models import Offer, BaseInformation, Message, Grade
 
 
 class OfferForm(forms.ModelForm):
@@ -19,7 +19,11 @@ class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ['message']
-        widgets = {
-            'message': forms.Textarea(attrs={'placehlder': 'Write a message...'})
-        }
+
+
+class GradeForm(forms.ModelForm):
+    class Meta:
+        model = Grade
+        exclude = ['user']
+
 

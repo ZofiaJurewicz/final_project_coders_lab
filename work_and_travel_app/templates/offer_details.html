@@ -1,21 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offer Details</title>
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block contents %}
   <h1>Offer Details</h1>
-  <div>
-      {% csrf_token %}
-    <h2>{{ offer.name }}</h2>
-    <p>Country: {{ offer.country }}</p>
-    <p>City: {{ offer.city }}</p>
-    <p>Description: {{ offer.description }}</p>
-    <p>Offer Type: {{ offer.get_offer_type_display }}</p>
-    <p>Categories: {{ offer.category}}</p>
-    <p>Active: {{ offer.is_active }}</p>
-  </div>
-</body>
-</html>
+    {% if user.is_authenticated %}
+    <div>
+        {% csrf_token %}
+        <h2>{{ offer.name }}</h2>
+        <p>Country: {{ offer.country }}</p>
+        <p>City: {{ offer.city }}</p>
+        <p>Description: {{ offer.description }}</p>
+        <p>Offer Type: {{ offer.get_offer_type_display }}</p>
+        {% for category in offer.category.all %}
+            <p>Category: {{ category.name}}</p>
+        {% endfor %}
+        <p>Since when: {{ offer.since_when}}</p>
+        <p>Until when: {{ offer.until_when}}</p>
+        <p>Only for women: {{ offer.only_for_women}}</p>
+        <p>Active: {{ offer.is_active }}</p>
+        {% if offer.owner == user %}
+            <p><a href="{% url 'edit_offer' offer_id=offer.id %}" methods="get">Edit offer</a></p>
+        {% else %}
+            <form action="{% url 'message_view' offer_id=offer.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Apply and send message</button>
+            </form>
+        {% endif %}
+    </div>
+    {% else %}
+        <h2>{{ offer.name }}</h2>
+        <p>Country: {{ offer.country }}</p>
+        <p>Description: {{ offer.description }}</p>
+        <p>Offer Type: {{ offer.get_offer_type_display }}</p>
+        {% for category in offer.category.all %}
+            <p>Category: {{ category.name}}</p>
+        {% endfor %}
+        <p>Active: {{ offer.is_active }}</p>
+    {% endif %}
+
+{% endblock %}
