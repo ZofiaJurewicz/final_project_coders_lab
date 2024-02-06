@@ -9,7 +9,7 @@
                 {{ message.message }}</li>
         {% endfor %}
     </ul>
-     <h2>Write a message to: {{ messages.reverse }}</h2>
+     <h2>Write a message:</h2>
     <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}

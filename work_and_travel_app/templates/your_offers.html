@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block contents %}
+    <h1>Yours offers</h1>
+    {% for offer in offers %}
+        <h2>{{ offer.name }}</h2>
+        <p>Description: {{ offer.description }}</p>
+        {% for category in offer.category.all %}
+                <p>Category: {{ category.name}}</p>
+        {% endfor %}
+        <p>Active: {{ offer.is_active }}</p>
+        <form action="{% url 'offer_details' offer_id=offer.id %}" method="get">
+            <button type="submit">Offer Details</button>
+        </form>
+        <form action="{% url 'edit_offer' offer_id=offer.id %}" method="get">
+            <button type="submit">Edit offer</button>
+        </form>
+    {% endfor %}
+{% endblock %}

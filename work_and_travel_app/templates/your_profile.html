@@ -10,8 +10,7 @@
         <p>Are you traveling: {{ user.baseinformation.are_you_traveling }}</p>
         <p>Native Origin: {{ user.baseinformation.native_origin }}</p>
         <p>Sex: {{ user.baseinformation.get_sex_display }}</p>
-
-    {% if BaseInformation is not None %}
+    {% if base_info is not None %}
         <a href="{% url 'edit_base_info' %}">Edit Base Information</a>
     {% else %}
         <a href="{% url 'add_base_info' %}">Add Base Information</a>

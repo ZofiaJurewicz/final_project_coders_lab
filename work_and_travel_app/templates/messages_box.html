@@ -1,11 +1,11 @@
 {% extends 'index.html' %}
 
-{% block content %}
+{% block contents %}
   <h2>Your Message Box</h2>
   <ul>
     {% for message in messages %}
       <li>
-        <strong>{{ message.sender }}:</strong> {{ message.message }} - {{ message.time }}
+        <strong>from: {{ message.sender }}:</strong> {{ message.message }} - {{ message.time }}
       </li>
     {% endfor %}
   </ul>

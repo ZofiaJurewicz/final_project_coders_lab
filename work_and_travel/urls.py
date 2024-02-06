@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 from work_and_travel_app.views import AddOfferView, YourProfile, AddBaseInfoView, EditBaseInfoView, StartView, \
-    OfferDetailsView, EditOfferView, MessagesView, OffersListView, GradeView, MessageBoxView
+    OfferDetailsView, EditOfferView, MessagesView, OffersListView, GradeView, MessageBoxView, YourOffers
 from accounts import views as account_view
 
 urlpatterns = [
@@ -35,8 +35,9 @@ urlpatterns = [
     path('offers_list/', OffersListView.as_view(), name='offers_list'),
     path('offer_details/<int:offer_id>/', OfferDetailsView.as_view(), name='offer_details'),
     path('edit_offer/<int:offer_id>/', EditOfferView.as_view(), name='edit_offer'),
-    path('your_message_box/', MessageBoxView.as_view(), name='message_box'),
-    path('messages_form/<int:offer_id>/<str:sender_name>/', MessagesView.as_view(), name='message_view'),
+    path('message_box/', MessageBoxView.as_view(), name='message_box'),
+    path('messages_form/<int:offer_id>/', MessagesView.as_view(), name='message_view'),
     path('grade/<int:offer_id>/<str:user_name>', GradeView.as_view(), name='grade_view'),
+    path('your_offers/', YourOffers.as_view(), name='your_offers'),
 ]
 
