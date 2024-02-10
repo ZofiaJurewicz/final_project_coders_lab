@@ -19,7 +19,7 @@
             {% if user.is_authenticated %}
             <p> Owner: {{ offer.owner.first_name }}</p>
                 {% if offer.owner != user %}
-                <form action="{% url 'message_view' offer_id=offer.id %}" method="post">
+                <form action="{% url 'message_view' offer_id=offer.id sender_username=request.user.username%}" method="post">
                     {% csrf_token %}
                     <button type="submit">Message</button>
                 </form>

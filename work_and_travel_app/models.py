@@ -56,6 +56,9 @@ class Offer(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Message(models.Model):
     message = models.TextField()

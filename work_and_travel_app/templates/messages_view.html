@@ -2,10 +2,14 @@
 
 {% block contents %}
     <h1>{{ offer.name }}</h1>
-    <h2>Messages: </h2>
+        {% if sender_user %}
+    <h2>Messages with {{ sender_user.first_name}}</h2>
+    {% else %}
+    <h2>Messages:</h2>
+    {% endif %}
     <ul>
         {% for message in messages %}
-            <li>from: {{ message.sender }} <br>
+            <li>from: {{ message.sender.first_name}} <br>
                 {{ message.message }}</li>
         {% endfor %}
     </ul>

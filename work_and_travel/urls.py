@@ -36,7 +36,7 @@ urlpatterns = [
     path('offer_details/<int:offer_id>/', OfferDetailsView.as_view(), name='offer_details'),
     path('edit_offer/<int:offer_id>/', EditOfferView.as_view(), name='edit_offer'),
     path('message_box/', MessageBoxView.as_view(), name='message_box'),
-    path('messages_form/<int:offer_id>/', MessagesView.as_view(), name='message_view'),
+    path('messages_form/<int:offer_id>/<str:sender_username>/', MessagesView.as_view(), name='message_view'),
     path('grade/<int:offer_id>/<str:user_name>', GradeView.as_view(), name='grade_view'),
     path('your_offers/', YourOffers.as_view(), name='your_offers'),
 ]

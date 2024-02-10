@@ -2,11 +2,13 @@
 
 {% block contents %}
   <h2>Your Message Box</h2>
-  <ul>
-    {% for message in messages %}
-      <li>
-        <strong>from: {{ message.sender }}:</strong> {{ message.message }} - {{ message.time }}
-      </li>
-    {% endfor %}
-  </ul>
+  {% for offer, messages in conversations.items %}
+    <div>
+        <h3 ><a href="{% url 'message_view' offer_id=offer.id sender_username=request.user.username%}">{{ offer.name }} - Conversations with: {{ message.sender.first_name}}</a></h3>
+      <form action="{% url 'message_view' offer_id=offer.id sender_username=request.user.username %}" method="get">
+        {% csrf_token %}
+        <button type="submit">Conversations</button>
+      </form>
+    </div>
+  {% endfor %}
 {% endblock %}

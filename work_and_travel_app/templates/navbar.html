@@ -1,27 +1,53 @@
-<div class="container px-4 px-lg-5">
-{{ xxx }}
-        <a class="navbar-brand" href="#page-top">
-            {% if not user.is_authenticated %}
-                Hello Stranger
-                <ul>
-                    <li><a href="{% url 'login_view' %}">Login</a></li>
-                    <li><a href="{% url 'register_view' %}">Register</a></li>
-                </ul>
+<nav class="navbar navbar-expand-lg" id="tm-nav">
+    {{ xxx }}
+    {% if not user.is_authenticated %}
+        <a class="navbar-brand">Hello Stranger</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-supported-content" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-supported-content">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item selected">
+                <a class="nav-link" aria-current="page" href="{% url 'login_view' %}">Login</a>
+                <div class="circle"></div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register_view' %}">Register</a>
+                <div class="circle"></div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'offers_list' %}">Offers</a>
+                <div class="circle"></div>
+            </li>
             {% else %}
-                <ul>
-                    <li><p>Hello {{ user.username }}</p></li>
+            <a class="navbar-brand" href="{% url 'your_profile' %}">Hello {{ user.username }}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-supported-content" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-supported-content">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item selected">
+                        <a class="nav-link" aria-current="page" href="{% url 'start' %}">Start</a>
+                        <div class="circle"></div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'offers_list' %}">Offers</a>
+                        <div class="circle"></div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_offer' %}">Add offer</a>
+                        <div class="circle"></div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'message_box' %}">Message BOX</a>
+                        <div class="circle"></div>
+                    </li>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout_view' %}">Logout</a>
+                        <div class="circle"></div>
+                    </li>
                 </ul>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'start' %}">Start</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'offers_list' %}">Offers</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'add_offer' %}">Add offer</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'message_box' %}">Message BOX</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'your_profile' %}">Your profile, {{ user.username }}</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'logout_view' %}">Logout</a></li>
-                    </ul>
-                </div>
-            {% endif %}
-        </a>
-    </div>
-</div>
+            </div>
+        </nav>
+    {% endif %}

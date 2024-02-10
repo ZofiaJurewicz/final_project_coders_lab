@@ -20,7 +20,7 @@
         {% if offer.owner == user %}
             <p><a href="{% url 'edit_offer' offer_id=offer.id %}" methods="get">Edit offer</a></p>
         {% else %}
-            <form action="{% url 'message_view' offer_id=offer.id %}" method="post">
+            <form action="{% url 'message_view' offer_id=offer.id sender_username=request.user.username %}%}" method="post">
                 {% csrf_token %}
                 <button type="submit">Apply and send message</button>
             </form>
