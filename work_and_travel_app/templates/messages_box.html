@@ -2,13 +2,25 @@
 
 {% block contents %}
   <h2>Your Message Box</h2>
-  {% for offer, messages in conversations.items %}
+    {% for offer, messages in conversations.items %}
     <div>
-        <h3 ><a href="{% url 'message_view' offer_id=offer.id sender_username=request.user.username%}">{{ offer.name }} - Conversations with: {{ message.sender.first_name}}</a></h3>
-      <form action="{% url 'message_view' offer_id=offer.id sender_username=request.user.username %}" method="get">
-        {% csrf_token %}
-        <button type="submit">Conversations</button>
-      </form>
+        <h3><a href="{% url 'message_view' offer_id=offer.id sender_username=request.user.username %}">{{ offer.name }}</a></h3>
+        <ul>
+        {% if request.user.username == sender_username %}
+          {% for message in messages %}
+            {% if forloop.first %}
+              <li>Conversation with: <strong>{{ message.receiver.first_name }}</strong> - <a href="{% url 'message_view' offer_id=offer.id sender_username=message.sender.username %}">View Conversation</a></li>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+        {% for message in messages %}
+            {% if forloop.first %}
+              <li>Conversation with: <strong>{{ message.sender.first_name }}</strong> - <a href="{% url 'message_view' offer_id=offer.id sender_username=message.sender.username %}">View Conversation</a></li>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        </ul>
     </div>
   {% endfor %}
 {% endblock %}
+

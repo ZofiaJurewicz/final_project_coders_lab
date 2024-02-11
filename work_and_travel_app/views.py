@@ -108,7 +108,7 @@ class OffersListView(View):
         search_country = request.GET.get('search', '')
         offers = Offer.objects.filter(is_active=True)
         categories = Category.objects.all()
-        paginator = Paginator(offers, 1)
+        paginator = Paginator(offers, 2)
         page = request.GET.get('page')
         offers_list = paginator.get_page(page)
 
@@ -164,9 +164,22 @@ class MessagesView(LoginRequiredMixin, View):
     def get(self, request, offer_id, sender_username):
         offer = Offer.objects.get(id=offer_id)
         sender_user = get_object_or_404(User, username=sender_username)
-        messages = Message.objects.filter(Q(offer=offer) & (Q(receiver=request.user) | Q(sender=request.user))).order_by('time')
-        form = MessageForm()
 
+        message_ids_for_sender = Message.objects.filter(
+            offer=offer,
+            sender=sender_user
+        ).values_list('id', flat=True)
+
+        message_ids_for_receiver = Message.objects.filter(
+            offer=offer,
+            receiver=sender_user
+        ).values_list('id', flat=True)
+
+        all_message_ids = set(list(message_ids_for_sender) + list(message_ids_for_receiver))
+
+        messages = Message.objects.filter(id__in=all_message_ids).order_by('time')
+
+        form = MessageForm()
         ctx = {
             'offer': offer,
             'form': form,
@@ -188,9 +201,21 @@ class MessagesView(LoginRequiredMixin, View):
             message.save()
             return redirect('message_view', offer_id=offer_id, sender_username=sender_username)
         else:
-            messages = Message.objects.filter(Q(offer=offer) & (Q(receiver=request.user) | Q(sender=request.user))).order_by('time')
-            sender_user = get_object_or_404(User, username=sender_username)
-            return render(request, 'messages_view.html', {'offer': offer, 'messages': messages, 'form': form, 'sender_user': sender_user})
+            messages = Message.objects.filter(
+                offer=offer,
+                sender=sender_user,
+                receiver=offer.owner
+            ) | Message.objects.filter(
+                offer=offer,
+                receiver=sender_user,
+                sender=offer.owner
+            ).distinct().order_by('time')
+            return render(request, 'messages_view.html', {
+                'offer': offer,
+                'messages': messages,
+                'form': form,
+                'sender_user': sender_user
+            })
 
 
 class GradeView(LoginRequiredMixin, View):
