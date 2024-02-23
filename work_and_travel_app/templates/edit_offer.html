@@ -1,17 +1,14 @@
 {% extends 'index.html' %}
 
 {% block contents %}
-  {% if user.is_authenticated %}
-    <p>{{ user.username }}</p>
-  {% endif %}
-  <h1>Edit offer</h1>
-  <form method="post" action="{% url 'edit_offer' offer_id %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="hidden" name="offer_id" value="{{ offer_id }}">
-    <button type="submit">Save Changes</button>
-  </form>
-  {% if form.errors %}
-    <p>Form has errors. Please correct them.</p>
-  {% endif %}
+    {% if user.is_authenticated %}
+    {% endif %}
+    <h1>Edit offer</h1>
+    <form method="post" action="{% url 'edit_offer' offer_id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="offer_id" value="{{ offer_id }}">
+        <button type="submit">Save Changes</button>
+    </form>
+
 {% endblock %}

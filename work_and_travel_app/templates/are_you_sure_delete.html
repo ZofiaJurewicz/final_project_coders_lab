@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block contents %}
+    <h1>Delete offer: {{ offer.name }}</h1>
+    <p>Remember that deleting an offer deletes it irreversibly. <br>
+        If you want the offer to be invisible, you can always deactivate it in the offer edition.<br>
+        Are you sure you want to delete the offer?</p>
+    <form action="{% url 'offers_list' %}" method="get">
+        <button type="submit">Back to offers list</button>
+    </form>
+
+    <form action="{% url 'delete_offer' offer.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Delete Offer</button>
+    </form>
+
+{% endblock %}

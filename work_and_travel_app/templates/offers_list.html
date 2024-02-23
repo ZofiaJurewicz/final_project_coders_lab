@@ -1,14 +1,13 @@
 {% extends 'index.html' %}
 
 {% block contents %}
-<h1>Offer Details</h1>
-<h2><a>{{ offer.name }}</a></h2>
+<h1>Offers:</h1>
     <form action="" method="get">
         <label for="search">Where:</label>
         <input type="text" id="search" name="search">
         <button type="submit">Search</button>
     </form>
-        {% for offer in offers %}
+        {% for offer in offers_list %}
             <div>
             <h2><a href="{% url 'offer_details' offer_id=offer.id %}">{{ offer.name }}</a></h2>
             <p>Country: {{ offer.country }}</p>
@@ -18,26 +17,13 @@
             {% endfor %}
             {% if user.is_authenticated %}
             <p> Owner: {{ offer.owner.first_name }}</p>
-                {% if offer.owner != user %}
-                    <form action="{% url 'message_view' offer_id=offer.id sender_username=request.user.username %}" method="post">
-                        <button type="submit">Message</button>
-                    </form>
-                {% endif %}
-            <form action="{% url 'offer_details' offer_id=offer.id %}" method="get">
-                {% csrf_token %}
-                <button type="submit">Offer Details</button>
-            </form>
+                <a href="{% url 'offer_details' offer_id=offer.id %}" >Offer Details<br></a>
                 {% if offer.owner == user %}
-                    <form action="{% url 'edit_offer' offer_id=offer.id %}" method="get">
-                        {% csrf_token %}
-                        <button type="submit">Edit offer</button>
-                    </form>
-                    <a href="#" class="btn btn-danger rounded-0 text-light m-1">Delete</a>
+                    <a href="{% url 'edit_offer' offer_id=offer.id %}">Edit offer<br></a>
+                    <a href="{% url 'delete_offer_ays' offer_id=offer.id %}">Delete offer<br></a>
                 {% endif %}
             {% else %}
-            <form action="{% url 'offer_details' offer_id=offer.id %}" method="get">
-                <button type="submit">Offer Details</button>
-            </form>
+                <a href="{% url 'offer_details' offer_id=offer.id %}">Offer Details<br></a>
             {% endif %}
             </div>
     {% endfor %}

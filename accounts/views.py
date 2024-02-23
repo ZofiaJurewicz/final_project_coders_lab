@@ -4,7 +4,6 @@ from django.views import View
 
 from accounts.forms import LoginForm, RegisterForm
 
-
 # Create your views here.
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
@@ -35,7 +34,7 @@ class LogoutView(View):
 
     def get(self, request):
         logout(request)
-        return redirect('start')
+        return redirect('login_view')
 
 
 class RegistrationView(View):
@@ -53,4 +52,3 @@ class RegistrationView(View):
             login(request, user)
             return redirect('your_profile')
         return render(request, 'register_form.html', {'form': form})
-

@@ -1,22 +1,23 @@
 {% extends 'index.html' %}
 
 {% block contents %}
-    <h1>{{ offer.name }}</h1>
-        {% if sender_user %}
-    <h2>Messages with {{ sender_user.first_name}}</h2>
-    {% else %}
-    <h2>Messages:</h2>
-    {% endif %}
-    <ul>
-        {% for message in messages %}
-            <li>from: {{ message.sender.first_name}} <br>
-                {{ message.message }}</li>
-        {% endfor %}
-    </ul>
-     <h2>Write a message:</h2>
-    <form method="post" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Send</button>
-    </form>
+  <h2>Conversation from offer: {{ offer.name }}</h2>
+    <br>
+  
+  <div>
+    {% for conversation in conversations %}
+      <div class="conversation">
+        <h3>Conversation between: {{ request.user.username }} and {{ conversation.partner.username }}</h3>
+        <div class="message">
+          <p><strong>From:</strong> {{ conversation.last_message.sender.username }} <strong>To:</strong> {{ conversation.last_message.receiver.username }}</p>
+          <p>Last message: {{ conversation.last_message.message }}</p>
+          <p><small>Sent on: {{ conversation.last_message.time }}</small></p>
+            <a href="{% url 'topic_view' offer_id=offer.id sender_id=conversation.partner.id %}">Conversation</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}
+
+
+

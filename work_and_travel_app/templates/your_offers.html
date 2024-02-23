@@ -9,11 +9,8 @@
                 <p>Category: {{ category.name}}</p>
         {% endfor %}
         <p>Active: {{ offer.is_active }}</p>
-        <form action="{% url 'offer_details' offer_id=offer.id %}" method="get">
-            <button type="submit">Offer Details</button>
-        </form>
-        <form action="{% url 'edit_offer' offer_id=offer.id %}" method="get">
-            <button type="submit">Edit offer</button>
-        </form>
+        <a href="{% url 'offer_details' offer_id=offer.id %}">Offer Details<br></a>
+        <a href="{% url 'edit_offer' offer_id=offer.id %}">Edit offer<br></a>
+        <a href="{% url 'delete_offer_ays' offer_id=offer.id %}">Delete offer<br></a>
     {% endfor %}
 {% endblock %}

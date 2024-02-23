@@ -23,4 +23,3 @@ class RegisterForm(forms.ModelForm):
         if p1 is None or p2 is None or p1 != p2:
             raise ValidationError('Password must be the same')
         return cleaned_data
-

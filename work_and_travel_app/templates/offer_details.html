@@ -6,6 +6,7 @@
     <div>
         {% csrf_token %}
         <h2>{{ offer.name }}</h2>
+        <p>Owner: {{ offer.owner.first_name }}</p>
         <p>Country: {{ offer.country }}</p>
         <p>City: {{ offer.city }}</p>
         <p>Description: {{ offer.description }}</p>
@@ -20,14 +21,12 @@
         {% if offer.owner == user %}
             <p><a href="{% url 'edit_offer' offer_id=offer.id %}" methods="get">Edit offer</a></p>
         {% else %}
-            <form action="{% url 'message_view' offer_id=offer.id sender_username=request.user.username %}%}" method="post">
-                {% csrf_token %}
-                <button type="submit">Apply and send message</button>
-            </form>
+            <p><a href="{% url 'topic_view' offer_id=offer.id sender_id=request.user.id %}">Apply and send message</a></p>
         {% endif %}
     </div>
     {% else %}
         <h2>{{ offer.name }}</h2>
+        <p>Owner: {{ offer.owner.first_name }}</p>
         <p>Country: {{ offer.country }}</p>
         <p>Description: {{ offer.description }}</p>
         <p>Offer Type: {{ offer.get_offer_type_display }}</p>

@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'index.html' %}
 
-</body>
-</html>
+{% block contents %}
+    <h1>Rating: {{ offer.name }}</h1>
+    <p>For: {{ message.sender.username }}</p>
+    
+    {% if form.instance.pk %}
+        <p>Your rating: {{ form.instance.grade }}</p>
+        <p>Description: {{ form.instance.description }}</p>
+        
+        {% if answer %}
+        <div>
+            <strong>Response from: {{ message.sender.username }}</strong>
+            <p>Rating you get: {{ answer.grade_answer }}</p>
+            <p>Description: {{ answer.text }}</p>
+        </div>
+        {% endif %}
+        
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Give a rate</button>
+    </form>
+{% endblock %}

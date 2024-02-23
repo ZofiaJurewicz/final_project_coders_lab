@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block contents %}
+<h1>Answer to the rating</h1>
+
+<div>
+    <strong>Rating you get: </strong> {{ grade.grade }}<br>
+    <strong>Description: </strong> {{ grade.description }}
+</div>
+<br>
+<div>
+    {% if form.instance.pk %}
+        <strong>Your rating: </strong> {{ form.instance.grade_answer }}<br>
+        <strong>Description: </strong> {{ form.instance.text }}
+    {% endif %}
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Send answer</button>
+</form>
+
+{% endblock %}
+
+

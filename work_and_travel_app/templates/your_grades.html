@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block contents %}
+<h2>Your rating</h2>
+    {% if grades_list %}
+        <ul>
+        {% for grade in grades_list  %}
+            <li>
+                <strong>{{ grade.offer_names }}</strong> - rating from: <strong>{{ grade.owner_names }}</strong>: <strong>{{ grade.grade_value }}</strong>
+            <a href="{% url 'answer_view' grade_id=grade.id %}">Answer</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

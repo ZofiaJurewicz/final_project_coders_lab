@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+{% block contents %}
+    <h1>"{{ offer.name }}"</h1>
+    {% if sender_user %}
+        <h2>Messages with {{ contact_user.first_name }}</h2>
+    {% else %}
+        <h2>Messages:</h2>
+    {% endif %}
+    <ul>
+        {% for message in messages %}
+            <li>from: {{ message.sender.first_name }} <br>
+                to: {{ message.receiver.first_name }} <br>
+                message: {{ message.message }} <br>
+                <small>{{ message.time|date:"Y-m-d H:i" }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+    <h2>Write a message:</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ message_form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+
+    {% if offer.owner == request.user %}
+        <a href="{% url 'grade_view' offer_id=offer.id sender_id=sender_id %}">Give a rating</a>
+    {% endif %}
+
+
+{% endblock %}

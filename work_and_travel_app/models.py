@@ -10,17 +10,6 @@ class Category(models.Model):
         return f"{self.name}"
 
 
-class Grade(models.Model):
-    grade = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.TextField(max_length=255)
-
-
-class Answer(models.Model):
-    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    text = models.TextField(max_length=255)
-
-
 class BaseInformation(models.Model):
     SEX_CHOICES = [
         ('female', 'Female'),
@@ -29,7 +18,7 @@ class BaseInformation(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     contact_number = models.CharField(max_length=255)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(help_text='Enter date: YYYY-MM-DD')
     are_you_traveling = models.BooleanField(default=False)
     native_origin = models.CharField(max_length=255)
     sex = models.CharField(max_length=9, choices=SEX_CHOICES)
@@ -50,8 +39,8 @@ class Offer(models.Model):
     description = models.TextField()
     offer_type = models.CharField(max_length=20, choices=OFFER_CHOICES)
     category = models.ManyToManyField(Category)
-    since_when = models.DateField()
-    until_when = models.DateField()
+    since_when = models.DateField(help_text='Enter date: YYYY-MM-DD')
+    until_when = models.DateField(help_text='Enter date: YYYY-MM-DD')
     only_for_women = models.BooleanField(default=False)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
@@ -68,4 +57,25 @@ class Message(models.Model):
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.sender}  {self.receiver}"
+        return f"{self.sender}  {self.receiver} {self.offer}"
+
+
+class Grade(models.Model):
+    grade = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],
+                                help_text="Rating must be between 1 to 5")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField(max_length=255)
+    message = models.ForeignKey(Message, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.grade} {self.user.first_name} {self.message.offer.name}'
+
+
+class Answer(models.Model):
+    answer = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    grade_answer = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],
+                                       help_text="Rating must be between 1 to 5")
+    text = models.TextField(max_length=255)
+
+    def __str__(self):
+        return f'{self.answer} {self.grade_answer}'
